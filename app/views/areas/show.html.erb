@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @area.name %>
+</p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @area.url %>
+</p>
+<% @area.listings.each do |listing| %>
+  <p>Title: <%= listing.title %></p>
+  <p>Description: <%= listing.description %></p>
+  <p>Address: <%= listing.address %></p>
+  <p>Price: <%= listing.price.amount %></p>
+<% end %>
+
+
+
+<%= link_to 'Edit', edit_area_path(@area) %> |
+<%= link_to 'Back', areas_path %>
