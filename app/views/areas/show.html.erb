@@ -9,6 +9,7 @@
   <strong>Url:</strong>
   <%= @area.url %>
 </p>
+<p><%= @area.listings.count %> listings</p>
 <% @area.listings.each do |listing| %>
   <p>Title: <%= listing.title %></p>
   <p>Description: <%= listing.description %></p>
