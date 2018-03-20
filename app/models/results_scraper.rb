@@ -9,9 +9,11 @@ class ResultsScraper
     browser.visit url
     pages = browser.all(:css, '.pagination-dropdown option').last.text.to_i
     (1..pages).each do |n|
+      sleep(5)
       browser.find_all(:css, '.l-searchResult').each do |result|
+        sleep(1)
         if result.find_all(:css, 'a.propertyCard-link').first
-          listing = Listing.find_or_create_by(rightmove_id: rightmove_id(result))
+          listing = Listing.find_or_initialize_by(rightmove_id: rightmove_id(result))
           date = parsed_date(result.find(:css, '.propertyCard-branchSummary-addedOrReduced').text.split(" ").last)
           reduced = result.find(:css, '.propertyCard-branchSummary-addedOrReduced').text.split(" ").first != "Added"
           price = result.find(:css, '.propertyCard-priceValue').text.gsub(/£|,/, "").to_i
@@ -28,7 +30,9 @@ class ResultsScraper
           end
           listing.title = title
           listing.description = description
-          listing.prices.build(date: date, reduction: reduced, amount: price)
+          if listing.prices.where(date: date, amount: price).none?
+            listing.prices.build(date: date, reduction: reduced, amount: price)
+          end
           listing.save
         end
       end
