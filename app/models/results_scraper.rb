@@ -36,9 +36,10 @@ class ResultsScraper
           listing.save
         end
       end
-      if n < pages
+      while n < pages && browser.find(:css, '.pagination-dropdown').find_all(:css, 'option')[n] != browser.find(:css, '.pagination-dropdown').find_all(:css, 'option').select { |x| x.selected? }.first
         browser.find(:css, '.pagination-dropdown').select (n + 1)
         browser.find(:css, '.pagination-button.pagination-direction.pagination-direction--next').click
+        sleep(1)
       end
     end
   end
