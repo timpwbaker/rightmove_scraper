@@ -3,8 +3,9 @@
 <h1><%= @area.name %> <small><%= @area.listings.count %> listings</small></h1>
 
 <p><%= link_to "Visit on Rightmove", @area.url %></p>
+<hr>
 <% @area.listings.each do |listing| %>
-  <p><b><%= listing.title %></b></p>
+  <p><%= link_to listing.title, listing.rm_link, target: "_blank" %></p>
   <p><%= listing.address %></p>
   <p><small><%= listing.description %></small></p>
   <p>£<%= number_with_delimiter(listing.price.amount, delimiter: ",") %>
