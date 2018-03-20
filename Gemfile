@@ -37,12 +37,13 @@ gem 'selenium-webdriver'
 gem 'nokogiri'
 gem 'capybara'
 gem 'chromedriver-helper'
-gem 'launchy'
+gem 'bootstrap'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry'
   gem 'pry-byebug'
+  gem 'launchy'
 end
 
 group :development do

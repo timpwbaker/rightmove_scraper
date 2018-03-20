@@ -1,20 +1,16 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @area.name %>
-</p>
+<h1><%= @area.name %> <small><%= @area.listings.count %> listings</small></h1>
 
-<p>
-  <strong>Url:</strong>
-  <%= @area.url %>
-</p>
-<p><%= @area.listings.count %> listings</p>
+<p><%= link_to "Visit on Rightmove", @area.url %></p>
 <% @area.listings.each do |listing| %>
-  <p>Title: <%= listing.title %></p>
-  <p>Description: <%= listing.description %></p>
-  <p>Address: <%= listing.address %></p>
-  <p>Price: <%= listing.price.amount %></p>
+  <p><b><%= listing.title %></b></p>
+  <p><%= listing.address %></p>
+  <p><small><%= listing.description %></small></p>
+  <p>£<%= number_with_delimiter(listing.price.amount, delimiter: ",") %>
+  <% if listing.price.reduction %>
+    - Reduced</p>
+  <% end %>
   <% if listing.prices.count > 1 %>
     <p>Previous prices:
     <ol>
@@ -23,6 +19,7 @@
     <% end %>
     </ol>
   <% end %>
+  <hr>
 <% end %>
 
 

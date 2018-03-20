@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RightmoveScraper</title>
+    <title>WriteMove</title>
     <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <section>
+      <nav style="width:100%">
+        <h1><%= link_to "WriteMove", root_path, class: "home" %>
+        <small>Writing Rightmove</small></h1>
+      </nav>
+    </section>
+
     <%= yield %>
   </body>
 </html>
