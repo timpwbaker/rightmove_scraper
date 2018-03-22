@@ -13,13 +13,15 @@ class ResultsScraper
       browser.find_all(:css, '.l-searchResult').each do |result|
         sleep(1)
         if result.find_all(:css, 'a.propertyCard-link').first
-          listing = Listing.find_or_initialize_by(rightmove_id: rightmove_id(result))
+          listing = Listing.find_or_create_by(rightmove_id: rightmove_id(result))
+
           date = parsed_date(result.find(:css, '.propertyCard-branchSummary-addedOrReduced').text.split(" ").last)
           reduced = result.find(:css, '.propertyCard-branchSummary-addedOrReduced').text.split(" ").first != "Added"
           price = result.find(:css, '.propertyCard-priceValue').text.gsub(/£|,/, "").to_i
           address = result.find(:css, 'address.propertyCard-address').text
           title = result.find(:css, 'h2.propertyCard-title').text
           description = result.find(:css, '.propertyCard-description').text
+          tags = result.find_all(:css, '.propertyCard-tagTitle').select{|x| x.visible?}.map(&:text)
 
           listing.area = area
           listing.address = address
@@ -30,10 +32,12 @@ class ResultsScraper
           end
           listing.title = title
           listing.description = description
-          if listing.prices.where(date: date, amount: price).none?
-            listing.prices.build(date: date, reduction: reduced, amount: price)
-          end
+          listing.tags = tags
+
           listing.save
+          if listing.prices.where(date: date, amount: price).none?
+            listing.prices.create(date: date, reduction: reduced, amount: price)
+          end
         end
       end
       while n < pages && browser.find(:css, '.pagination-dropdown').find_all(:css, 'option')[n] != browser.find(:css, '.pagination-dropdown').find_all(:css, 'option').select { |x| x.selected? }.first
@@ -70,9 +74,5 @@ class ResultsScraper
 
   def browser
     @_browser ||= Capybara.current_session
-  end
-
-  def driver
-    @_driver ||= browser.driver.browser
   end
 end

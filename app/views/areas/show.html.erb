@@ -8,15 +8,20 @@
   <p><%= link_to listing.title, listing.rm_link, target: "_blank" %></p>
   <p><%= listing.address %></p>
   <p><small><%= listing.description %></small></p>
+  <% if listing.tags.any? %>
+    <p><i><%= listing.tags.join(", ") %></i></p>
+  <% end %>
   <p>£<%= number_with_delimiter(listing.price.amount, delimiter: ",") %>
   <% if listing.price.reduction %>
-    - Reduced</p>
+    - Reduced
   <% end %>
+  <small><%= listing.price.pretty_date %></small></p>
   <% if listing.prices.count > 1 %>
     <p>Previous prices:
     <ol>
     <% listing.prices.previous.each do |price| %>
-      <li><%= price.amount %>
+      <li>£<%= number_with_delimiter(price.amount, delimiter: ",") %>
+      <small><%= price.pretty_date %></small></li>
     <% end %>
     </ol>
   <% end %>

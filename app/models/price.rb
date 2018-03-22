@@ -6,6 +6,10 @@ class Price < ApplicationRecord
   end
 
   def self.previous
-    self.last self.all.count - 1
+    first(self.count - 1).reverse
+  end
+
+  def pretty_date
+    date.strftime("%d %b %y")
   end
 end
