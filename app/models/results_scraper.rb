@@ -22,6 +22,7 @@ class ResultsScraper
           title = result.find(:css, 'h2.propertyCard-title').text
           description = result.find(:css, '.propertyCard-description').text
           tags = result.find_all(:css, '.propertyCard-tagTitle').select{|x| x.visible?}.map(&:text)
+          bedrooms = title.first.to_i
 
           listing.area = area
           listing.address = address
@@ -31,6 +32,7 @@ class ResultsScraper
             listing.added_on = date
           end
           listing.title = title
+          listing.bedrooms = bedrooms
           listing.description = description
           listing.tags = tags
 

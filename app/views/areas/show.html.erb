@@ -1,10 +1,16 @@
 <p id="notice"><%= notice %></p>
 
-<h1><%= @area.name %> <small><%= @area.listings.count %> listings</small></h1>
+<h1><%= @area.name %> <small><%= @listings.count %> listings</small></h1>
+<%= form_tag @area_path, method: :get do %>
+  <%= label_tag :bedrooms %>
+  <%= select_tag :bedrooms, options_for_select(@area.listings.map(&:bedrooms).uniq, 4)%>
+  <%= submit_tag 'Go', class: "green-button" %>
+<% end %>
+<p><%= link_to "Clear filters", area_path(@area) %>
 
 <p><%= link_to "Visit on Rightmove", @area.url %></p>
 <hr>
-<% @area.listings.each do |listing| %>
+<% @listings.each do |listing| %>
   <p><%= link_to listing.title, listing.rm_link, target: "_blank" %></p>
   <p><%= listing.address %></p>
   <p><small><%= listing.description %></small></p>

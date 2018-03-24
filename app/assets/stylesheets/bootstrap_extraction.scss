@@ -11,6 +11,8 @@ section div { @extend .col-md-12 }
 .alert-success { @extend .alert-success }
 .alert-danger { @extend .alert-danger }
 
+.green-button { @extend .btn; @extend .btn-success }
+
 //Navigation elements
 nav { @extend .navbar; }
 nav a.home { @extend .navbar-brand }
