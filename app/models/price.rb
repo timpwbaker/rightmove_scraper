@@ -6,7 +6,7 @@ class Price < ApplicationRecord
   end
 
   def self.previous
-    first(self.count - 1).reverse
+    chronological.first(self.count - 1).reverse
   end
 
   def pretty_date
