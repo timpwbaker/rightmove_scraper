@@ -1,22 +1,27 @@
 class ListingsFilter
-  attr_reader :listings, :bedrooms
+  attr_reader :not_sold, :bedrooms
 
-  def initialize(listings:, bedrooms: nil)
+  def initialize(listings:, bedrooms: nil, not_sold: nil)
     @listings = listings
     @bedrooms = bedrooms
+    @not_sold = not_sold
   end
 
   def filter
-    if bedrooms
-      listings.where(bedrooms: bedrooms)
-    else
-      listings
+    bedrooms_filter
+    not_sold_filter
+    @listings
+  end
+
+  def not_sold_filter
+    if not_sold
+      @listings = @listings.select{ |l| (l.tags & ["SOLD STC", "UNDER_OFFER"]).empty? }
     end
   end
 
-  def bedroom_filter
+  def bedrooms_filter
     if bedrooms
-      listings = listings.where(bedrooms: bedrooms)
+      @listings = @listings.where(bedrooms: bedrooms)
     end
   end
 end
