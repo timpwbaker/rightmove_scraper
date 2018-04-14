@@ -37,7 +37,7 @@ class ResultsScraper
           listing.tags = tags
 
           listing.save
-          if listing.prices.where(date: date, amount: price).none?
+          if listing.prices.where(date: date.yesterday..date, amount: price).none?
             listing.prices.create(date: date, reduction: reduced, amount: price)
           end
         end
