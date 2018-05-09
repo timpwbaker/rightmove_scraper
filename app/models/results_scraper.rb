@@ -22,6 +22,7 @@ class ResultsScraper
           title = result.find(:css, 'h2.propertyCard-title').text
           description = result.find(:css, '.propertyCard-description').text
           tags = result.find_all(:css, '.propertyCard-tagTitle').select{|x| x.visible?}.map(&:text)
+          agent = result.find(:css, '.propertyCard-branchSummary-branchName').text
           bedrooms = title.first.to_i
 
           listing.area = area
@@ -35,6 +36,7 @@ class ResultsScraper
           listing.bedrooms = bedrooms
           listing.description = description
           listing.tags = tags
+          listing.agent = agent
 
           listing.save
           if listing.prices.where(date: date.yesterday..date, amount: price).none?
