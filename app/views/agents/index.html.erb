@@ -1,0 +1,4 @@
+<% Hash[@agents.sort_by{|k, v| v}.reverse].each do |agent| %>
+  <p><%= agent.first %>: <%= agent.second %>
+<% end %>
+

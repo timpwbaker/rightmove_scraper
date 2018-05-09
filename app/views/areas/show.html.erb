@@ -11,10 +11,12 @@
 <p><%= link_to "Clear filters", area_path(@area) %>
 
 <p><%= link_to "Visit on Rightmove", @area.url %></p>
+<p><%= link_to "Agents", area_agents_path(@area) %></p>
 <hr>
 <% @filtered_listings.each_with_index do |listing, index| %>
   <p><%= index + 1 %>: <%= link_to listing.title, listing.rm_link, target: "_blank" %></p>
   <p><%= listing.address %></p>
+  <p>Agent: <small><%= listing.agent %></small></p>
   <p><small><%= listing.description %></small></p>
   <% if listing.tags.any? %>
     <p><i><%= listing.tags.join(", ") %></i></p>
