@@ -25,13 +25,13 @@
   <% if listing.price.reduction %>
     - Reduced
   <% end %>
-  <small><%= listing.price.pretty_date %></small></p>
+  <small><%= listing.price.pretty_date %> (<%= time_ago_in_words(listing.price.date) %> ago)</small></p>
   <% if listing.prices.count > 1 %>
     <p>Previous prices:
     <ol>
     <% listing.prices.previous.each do |price| %>
       <li>£<%= number_with_delimiter(price.amount, delimiter: ",") %>
-      <small><%= price.pretty_date %></small></li>
+      <small><%= price.pretty_date %> (<%= time_ago_in_words(price.date) %> ago)</small></li>
     <% end %>
     </ol>
   <% end %>
