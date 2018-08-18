@@ -17,10 +17,11 @@
   <p><%= index + 1 %>: <%= link_to listing.title, listing.rm_link, target: "_blank" %></p>
   <p><%= listing.address %></p>
   <p>Agent: <small><%= listing.agent %></small></p>
-  <p><small><%= listing.description %></small></p>
-  <% if listing.tags.any? %>
-    <p><i><%= listing.tags.join(", ") %></i></p>
+  <% if listing.sold? %>
+    <p>SOLD - <small><%= pretty_date(listing.under_offer) %></small></p>
   <% end %>
+
+  <p><small><%= listing.description %></small></p>
   <p>£<%= number_with_delimiter(listing.price.amount, delimiter: ",") %>
   <% if listing.price.reduction %>
     - Reduced

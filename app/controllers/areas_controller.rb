@@ -7,7 +7,7 @@ class AreasController < ApplicationController
 
   def show
     @filtered_listings = ListingsFilter.new(
-      listings: @area.listings,
+      listings: @area.listings.includes(:prices),
       bedrooms: params[:bedrooms],
       not_sold: params[:not_sold]
     ).filter
@@ -38,7 +38,12 @@ class AreasController < ApplicationController
   end
 
   def destroy
-    @area.destroy redirect_to areas_url, notice: 'Area was successfully destroyed.' end
+    if @area.destroy
+      redirect_to areas_url, notice: 'Area was successfully destroyed.'
+    else
+      redirect_to areas_url, notice: 'Failed to destroy area'
+    end
+  end
 
   private
     def set_area

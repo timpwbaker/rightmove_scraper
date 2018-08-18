@@ -10,7 +10,7 @@ class ListingsFilter
   def filter
     bedrooms_filter
     not_sold_filter
-    @listings
+    @listings.order(created_at: :desc).includes(:prices)
   end
 
   def not_sold_filter

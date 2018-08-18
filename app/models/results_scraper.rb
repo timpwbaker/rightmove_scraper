@@ -25,6 +25,10 @@ class ResultsScraper
           agent = result.find(:css, '.propertyCard-branchSummary-branchName').text
           bedrooms = title.first.to_i
 
+          if (sold_tags.any? {|sold_tag| tags.include?(sold_tag) } && !sold_tags.any? { |sold_tag| listing.tags.include?(sold_tag) })
+            listing.under_offer = DateTime.current
+          end
+
           listing.area = area
           listing.address = address
           if reduced
@@ -41,8 +45,7 @@ class ResultsScraper
           listing.save
           if listing.prices.where(date: date.yesterday..date, amount: price).none?
             listing.prices.create(date: date, reduction: reduced, amount: price)
-          end
-        end
+          end end
       end
       while n < pages && browser.find(:css, '.pagination-dropdown').find_all(:css, 'option')[n] != browser.find(:css, '.pagination-dropdown').find_all(:css, 'option').select { |x| x.selected? }.first
         browser.find(:css, '.pagination-dropdown').select (n + 1)
@@ -54,6 +57,10 @@ class ResultsScraper
 
   def url
     area.url
+  end
+
+  def sold_tags
+    @_sold_tags ||= Listing.sold_tags
   end
 
   def parsed_date(date_string)
