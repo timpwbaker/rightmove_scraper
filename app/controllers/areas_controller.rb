@@ -9,7 +9,7 @@ class AreasController < ApplicationController
     @filtered_listings = ListingsFilter.new(
       listings: @area.listings.includes(:prices),
       bedrooms: params[:bedrooms],
-      not_sold: params[:not_sold]
+      sale_status: params[:sale_status]
     ).filter
   end
 

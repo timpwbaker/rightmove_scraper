@@ -1,27 +1,45 @@
 class ListingsFilter
-  attr_reader :not_sold, :bedrooms
+  attr_reader :sale_status, :bedrooms
 
-  def initialize(listings:, bedrooms: nil, not_sold: nil)
+  def initialize(listings:, bedrooms: nil, sale_status: nil)
     @listings = listings
     @bedrooms = bedrooms
-    @not_sold = not_sold
+    @sale_status = sale_status
   end
 
   def filter
     bedrooms_filter
-    not_sold_filter
+    sale_status_filter
     @listings.order(created_at: :desc).includes(:prices)
   end
 
-  def not_sold_filter
-    if not_sold
-      @listings = @listings.select{ |l| (l.tags & ["SOLD STC", "UNDER_OFFER"]).empty? }
+  private
+
+  def sale_status_filter
+    if sold?
+      @listings =
+        @listings.where(
+          "'SOLD STC'=ANY(tags) OR 'UNDER OFFER'=ANY(tags)"
+      )
+    elsif unsold?
+      @listings =
+        @listings.where.not(
+          "'SOLD STC'=ANY(tags) OR 'UNDER OFFER'=ANY(tags)"
+      )
     end
   end
 
   def bedrooms_filter
-    if bedrooms
-      @listings = @listings.where(bedrooms: bedrooms)
+    if bedrooms.present?
+      @listings = @listings.where("bedrooms = ?", bedrooms)
     end
+  end
+
+  def unsold?
+    @sale_status == "unsold"
+  end
+
+  def sold?
+    @sale_status == "sold"
   end
 end

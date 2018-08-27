@@ -3,9 +3,10 @@
 <h1><%= @area.name %> <small><%= @filtered_listings.count %> listings</small></h1>
 <%= form_tag @area_path, method: :get do %>
   <%= label_tag :bedrooms %>
-  <%= select_tag :bedrooms, options_for_select(@area.listings.map(&:bedrooms).uniq, 4), prompt: "All"%>
-  <%= label_tag :not_sold %>
-  <%= check_box_tag 'not_sold', 'true', params[:not_sold] %>
+  <%= select_tag :bedrooms, options_for_select(@area.listings.map(&:bedrooms).uniq.sort, params["bedrooms"]), prompt: "All"%>
+
+  <%= label_tag :sale_status %>
+  <%= select_tag :sale_status, options_for_select(["sold", "unsold"], params["sale_status"]), prompt: "All"%>
   <%= submit_tag 'Go', class: "green-button" %>
 <% end %>
 <p><%= link_to "Clear filters", area_path(@area) %>
