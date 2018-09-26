@@ -7,6 +7,9 @@ class ResultsScraper
 
   def scrape
     browser.visit url
+    ids_listed = []
+    area_ids = Listing.where(area_id: @area.id)
+      .where(delisted: false).pluck(:id)
     pages = browser.all(:css, '.pagination-dropdown option').last.text.to_i
     (1..pages).each do |n|
       sleep(5)
@@ -14,6 +17,7 @@ class ResultsScraper
         sleep(1)
         if result.find_all(:css, 'a.propertyCard-link').first
           listing = Listing.find_or_create_by(rightmove_id: rightmove_id(result))
+          ids_listed << listing.id
 
           date = parsed_date(result.find(:css, '.propertyCard-branchSummary-addedOrReduced').text.split(" ").last)
           reduced = result.find(:css, '.propertyCard-branchSummary-addedOrReduced').text.split(" ").first != "Added"
@@ -53,6 +57,9 @@ class ResultsScraper
         sleep(1)
       end
     end
+    missing_ids = area_ids - ids_listed
+    Listing.where(id: missing_ids)
+      .update_all({delisted: true, time_delisted: DateTime.current})
   end
 
   def url
