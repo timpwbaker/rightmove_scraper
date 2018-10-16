@@ -3,7 +3,7 @@
 <h1><%= @area.name %> <small><%= @filtered_listings.count %> listings</small></h1>
 <%= form_tag @area_path, method: :get do %>
   <%= label_tag :bedrooms %>
-  <%= select_tag :bedrooms, options_for_select(@area.listings.map(&:bedrooms).uniq.sort, params["bedrooms"]), prompt: "All"%>
+  <%= select_tag :bedrooms, options_for_select(@area.listings.map(&:bedrooms).uniq.compact.sort, params["bedrooms"]), prompt: "All"%>
 
   <%= label_tag :sale_status %>
   <%= select_tag :sale_status, options_for_select(["sold", "unsold"], params["sale_status"]), prompt: "All"%>
@@ -20,6 +20,8 @@
   <p>Agent: <small><%= listing.agent %></small></p>
   <% if listing.sold? %>
     <p>SOLD - <small><%= pretty_date(listing.under_offer) %></small></p>
+  <% elsif listing.delisted %>
+    <p>DELISTED - <small><%= pretty_date(listing.time_delisted) %></small></p>
   <% end %>
 
   <p><small><%= listing.description %></small></p>

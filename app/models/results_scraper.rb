@@ -14,7 +14,6 @@ class ResultsScraper
     (1..pages).each do |n|
       sleep(5)
       browser.find_all(:css, '.l-searchResult').each do |result|
-        sleep(1)
         if result.find_all(:css, 'a.propertyCard-link').first
           listing = Listing.find_or_create_by(rightmove_id: rightmove_id(result))
           ids_listed << listing.id
