@@ -3,5 +3,6 @@ Rails.application.routes.draw do
 
   resources :areas do
     resources :agents, only: :index
+    resources :stats, only: :index
   end
 end
