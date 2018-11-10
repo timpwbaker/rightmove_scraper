@@ -7,9 +7,7 @@
 <% @known_delisted_counts.each do |k, v| %>
   <%= "#{k.strftime("%b %y")}: #{v.count}" %></br>
 <% end %>
-<% @unknown_delisted_counts.each do |k, v| %>
-  <%= "Unknown: #{v.count}" %></br>
-<% end %>
+<%= "Unknown: #{@unknown_delisted_counts.count}" %></br>
 
 <h2>Under Offer Counts</h2>
 <% @under_offer_counts.each do |k, v| %>
