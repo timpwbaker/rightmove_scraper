@@ -1,3 +1,17 @@
-<% @listing_counts.each do |k, v| %>
+<h2>Counts</h2>
+<% @counts.each do |k, v| %>
+  <%= "#{k.strftime("%b %y")}: #{v.count}" %></br>
+<% end %>
+
+<h2>Delisted Counts</h2>
+<% @known_delisted_counts.each do |k, v| %>
+  <%= "#{k.strftime("%b %y")}: #{v.count}" %></br>
+<% end %>
+<% @unknown_delisted_counts.each do |k, v| %>
+  <%= "Unknown: #{v.count}" %></br>
+<% end %>
+
+<h2>Under Offer Counts</h2>
+<% @under_offer_counts.each do |k, v| %>
   <%= "#{k.strftime("%b %y")}: #{v.count}" %></br>
 <% end %>
