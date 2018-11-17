@@ -1,6 +1,7 @@
 class Listing < ApplicationRecord
   belongs_to :area
   has_many :prices, dependent: :destroy
+  has_many :sold_prices, dependent: :destroy
 
   def self.known_delisted
     delisted.where.not(time_delisted: nil)
@@ -32,5 +33,9 @@ class Listing < ApplicationRecord
 
   def sold?
     self.tags.any? { |listing_tag| Listing.sold_tags.include?(listing_tag) }
+  end
+
+  def rightmove_url
+    "https://www.rightmove.co.uk/property-for-sale/property-#{rightmove_id}.html"
   end
 end

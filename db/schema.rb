@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180925205944) do
+ActiveRecord::Schema.define(version: 20181117141729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,5 +51,16 @@ ActiveRecord::Schema.define(version: 20180925205944) do
     t.index ["listing_id"], name: "index_prices_on_listing_id"
   end
 
+  create_table "sold_prices", force: :cascade do |t|
+    t.bigint "listing_id"
+    t.integer "year"
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["listing_id", "year", "amount"], name: "index_sold_prices_on_listing_id_and_year_and_amount", unique: true
+    t.index ["listing_id"], name: "index_sold_prices_on_listing_id"
+  end
+
   add_foreign_key "prices", "listings"
+  add_foreign_key "sold_prices", "listings"
 end
