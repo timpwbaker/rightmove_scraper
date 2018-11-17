@@ -3,6 +3,10 @@ class Listing < ApplicationRecord
   has_many :prices, dependent: :destroy
   has_many :sold_prices, dependent: :destroy
 
+  def self.sold_prices_outdated
+    where("last_checked_sold_prices < ? or last_checked_sold_prices IS NULL", 1.week.ago)
+  end
+
   def self.known_delisted
     delisted.where.not(time_delisted: nil)
   end

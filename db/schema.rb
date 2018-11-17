@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181117141729) do
+ActiveRecord::Schema.define(version: 20181117162329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20181117141729) do
     t.datetime "under_offer"
     t.boolean "delisted", default: false
     t.datetime "time_delisted"
+    t.datetime "last_checked_sold_prices"
   end
 
   create_table "prices", force: :cascade do |t|
