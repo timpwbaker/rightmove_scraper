@@ -6,6 +6,10 @@ body { @extend .container; }
 section { @extend .row; }
 header { @extend .row; }
 section div { @extend .col-md-12 }
+.listing-text { @extend .col-md-8 }
+.listing-sold-prices { @extend .col-md-4 }
+.sold-price-amount { @extend .col-md-6 }
+.sold-price-year { @extend .col-md-6 }
 
 .alert { @extend .alert }
 .alert-success { @extend .alert-success }

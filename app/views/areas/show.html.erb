@@ -15,30 +15,55 @@
 <p><%= link_to "Agents", area_agents_path(@area) %></p>
 <hr>
 <% @filtered_listings.each_with_index do |listing, index| %>
-  <p><%= index + 1 %>: <%= link_to listing.title, listing.rm_link, target: "_blank" %></p>
-  <p><%= listing.address %></p>
-  <p>Agent: <small><%= listing.agent %></small></p>
-  <% if listing.sold? %>
-    <p>SOLD - <small><%= pretty_date(listing.under_offer) %></small></p>
-  <% elsif listing.delisted %>
-    <p>DELISTED - <small><%= pretty_date(listing.time_delisted) %></small></p>
-  <% end %>
+  <section>
+    <div class='listing-text'>
+      <p><%= index + 1 %>: <%= link_to listing.title, listing.rm_link, target: "_blank" %></p>
+      <p><%= listing.address %></p>
+      <p>Agent: <small><%= listing.agent %></small></p>
+      <% if listing.sold? %>
+        <p>SOLD - <small><%= pretty_date(listing.under_offer) %></small></p>
+      <% elsif listing.delisted %>
+        <p>DELISTED - <small><%= pretty_date(listing.time_delisted) %></small></p>
+      <% end %>
 
-  <p><small><%= listing.description %></small></p>
-  <p>£<%= number_with_delimiter(listing.price.amount, delimiter: ",") %>
-  <% if listing.price.reduction %>
-    - Reduced
-  <% end %>
-  <small><%= listing.price.pretty_date %> (<%= time_ago_in_words(listing.price.date) %> ago)</small></p>
-  <% if listing.prices.count > 1 %>
-    <p>Previous prices:
-    <ol>
-    <% listing.prices.previous.each do |price| %>
-      <li>£<%= number_with_delimiter(price.amount, delimiter: ",") %>
-      <small><%= price.pretty_date %> (<%= time_ago_in_words(price.date) %> ago)</small></li>
+      <p><small><%= listing.description %></small></p>
+      <p>£<%= number_with_delimiter(listing.price.amount, delimiter: ",") %>
+    <% if listing.price.reduction %>
+      - Reduced
     <% end %>
-    </ol>
-  <% end %>
+    <small><%= listing.price.pretty_date %> (<%= time_ago_in_words(listing.price.date) %> ago)</small></p>
+      <% if listing.prices.count > 1 %>
+        <p>Previous prices:
+        <ol>
+          <% listing.prices.previous.each do |price| %>
+            <li>£<%= number_with_delimiter(price.amount, delimiter: ",") %>
+            <small><%= price.pretty_date %> (<%= time_ago_in_words(price.date) %> ago)</small></li>
+          <% end %>
+        </ol>
+      <% end %>
+    </div>
+    <div class='listing-sold-prices'>
+      <p>Sold Prices</p>
+      <section>
+          <div class='sold-price-year'>
+            <p><small>Year</small></p>
+          </div>
+          <div class='sold-price-amount'>
+            <p><small>Amount</small></p>
+          </div>
+      </section>
+      <% listing.sold_prices.each do |sp| %>
+        <section>
+          <div class='sold-price-year'>
+            <%= sp.year %>
+          </div>
+          <div class='sold-price-amount'>
+            <%= sp.amount %>
+          </div>
+        </section>
+      <% end %>
+    </div>
+  </section>
   <hr>
 <% end %>
 
