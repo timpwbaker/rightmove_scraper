@@ -25,6 +25,9 @@
       <% elsif listing.delisted %>
         <p>DELISTED - <small><%= pretty_date(listing.time_delisted) %></small></p>
       <% end %>
+      <% if listing.current_listing_sold_price %>
+        <p><%= listing.sold_price_string %></p>
+      <% end %>
 
       <p><small><%= listing.description %></small></p>
       <p>£<%= number_with_delimiter(listing.price.amount, delimiter: ",") %>
