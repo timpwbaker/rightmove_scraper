@@ -1,12 +1,22 @@
 <p id="notice"><%= notice %></p>
 
-<h1><%= @area.name %> <small><%= @filtered_listings.count %> listings</small></h1>
+<h1>
+  <%= @area.name %>
+  <small><%= @filtered_listings.count %> listings</small>
+</h1>
 <%= form_tag @area_path, method: :get do %>
   <%= label_tag :bedrooms %>
-  <%= select_tag :bedrooms, options_for_select(@area.listings.map(&:bedrooms).uniq.compact.sort, params["bedrooms"]), prompt: "All"%>
+  <%= select_tag :bedrooms, options_for_select(@filtered_listings.map(&:bedrooms).uniq.compact.sort, params["bedrooms"]), prompt: "All"%>
 
   <%= label_tag :sale_status %>
   <%= select_tag :sale_status, options_for_select(["sold", "unsold"], params["sale_status"]), prompt: "All"%>
+  <%= label_tag :year_sold %>
+  <%= select_tag :year_sold, options_for_select([2016, 2017, 2018], params["year_sold"]), prompt: "All"%>
+  <%= label_tag :new_sold_price_since %>
+  <%= select_tag :new_sold_price_since,
+    options_for_select([["7 days", 7], ["14 days", 14], ["21 days", 21], ["28 days", 28]],
+                       params["new_sold_price_since"]),
+  prompt: "All"%>
   <%= submit_tag 'Go', class: "green-button" %>
 <% end %>
 <p><%= link_to "Clear filters", area_path(@area) %>
@@ -70,7 +80,4 @@
   <hr>
 <% end %>
 
-
-
-<%= link_to 'Edit', edit_area_path(@area) %> |
 <%= link_to 'Back', areas_path %>

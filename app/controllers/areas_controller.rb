@@ -1,23 +1,24 @@
 class AreasController < ApplicationController
-  before_action :set_area, only: [:show, :edit, :update, :destroy]
+  before_action :set_area, only: [:show]
+  before_action :set_listings, only: [:show]
 
   def index
     @areas = Area.all
   end
 
   def show
-    @filtered_listings = ListingsFilter.new(
-      listings: @area.listings.includes(:prices),
-      bedrooms: params[:bedrooms],
-      sale_status: params[:sale_status]
-    ).filter
+    @filtered_ids ||= ListingsFilter.new(
+      listings: @listings,
+      bedrooms: filter_params[:bedrooms],
+      sale_status: filter_params[:sale_status],
+      year_sold: filter_params[:year_sold],
+      new_sold_price_since: filter_params[:new_sold_price_since]
+    ).filter.map(&:id)
+    @filtered_listings ||= Listing.where(id: @filtered_ids).includes(:sold_prices, :prices)
   end
 
   def new
     @area = Area.new
-  end
-
-  def edit
   end
 
   def create
@@ -29,28 +30,21 @@ class AreasController < ApplicationController
     end
   end
 
-  def update
-    if @area.update(area_params)
-      redirect_to @area, notice: 'Area was successfully updated.'
-    else
-      render :edit
-    end
-  end
-
-  def destroy
-    if @area.destroy
-      redirect_to areas_url, notice: 'Area was successfully destroyed.'
-    else
-      redirect_to areas_url, notice: 'Failed to destroy area'
-    end
-  end
-
   private
-    def set_area
-      @area = Area.find(params[:id])
-    end
 
-    def area_params
-      params.require(:area).permit(:url, :name, :bedrooms)
-    end
+  def set_area
+    @area = Area.find(params[:id])
+  end
+
+  def set_listings
+    @listings = @area.listings.includes(:sold_prices, :prices)
+  end
+
+  def area_params
+    params.require(:area).permit(:url, :name, :bedrooms)
+  end
+
+  def filter_params
+    params.permit(:bedrooms, :sale_status, :year_sold, :new_sold_price_since)
+  end
 end
