@@ -30,11 +30,11 @@ class Listing < ApplicationRecord
   def current_listing_sold_price
     relevant_years = [
       price.created_at.year,
-      (price.created_at + 3.months).year,
-      (price.created_at - 3.months).year
+      (price.created_at + 6.months).year,
+      (price.created_at - 6.months).year
     ].uniq
 
-    sold_prices.where(year: relevant_years).first
+    sold_prices.where(year: relevant_years).order(created_at: :desc).first
   end
 
   def asking_sold_percentage

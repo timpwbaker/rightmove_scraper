@@ -11,12 +11,17 @@
   <%= label_tag :sale_status %>
   <%= select_tag :sale_status, options_for_select(["sold", "unsold"], params["sale_status"]), prompt: "All"%>
   <%= label_tag :year_sold %>
-  <%= select_tag :year_sold, options_for_select([2016, 2017, 2018], params["year_sold"]), prompt: "All"%>
+  <%= select_tag :year_sold, options_for_select([2016, 2017, 2018, 2019], params["year_sold"]), prompt: "All"%>
   <%= label_tag :new_sold_price_since %>
   <%= select_tag :new_sold_price_since,
     options_for_select([["7 days", 7], ["14 days", 14], ["21 days", 21], ["28 days", 28]],
                        params["new_sold_price_since"]),
   prompt: "All"%>
+  <%= label_tag :order_by %>
+  <%= select_tag :order_by,
+    options_for_select([["Sold Date", "under_offer"]],
+                       params["order_by"]),
+  prompt: "None"%>
   <%= submit_tag 'Go', class: "green-button" %>
 <% end %>
 <p><%= link_to "Clear filters", area_path(@area) %>

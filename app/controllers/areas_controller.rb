@@ -14,7 +14,8 @@ class AreasController < ApplicationController
       year_sold: filter_params[:year_sold],
       new_sold_price_since: filter_params[:new_sold_price_since]
     ).filter.map(&:id)
-    @filtered_listings ||= Listing.where(id: @filtered_ids).includes(:sold_prices, :prices)
+    @filtered_listings ||=
+      Listing.where(id: @filtered_ids).order(order_by).includes(:sold_prices, :prices)
   end
 
   def new
@@ -32,6 +33,10 @@ class AreasController < ApplicationController
 
   private
 
+  def order_by
+    filter_params[:order_by] || :id
+  end
+
   def set_area
     @area = Area.find(params[:id])
   end
@@ -45,6 +50,6 @@ class AreasController < ApplicationController
   end
 
   def filter_params
-    params.permit(:bedrooms, :sale_status, :year_sold, :new_sold_price_since)
+    params.permit(:bedrooms, :sale_status, :year_sold, :new_sold_price_since, :order_by)
   end
 end
