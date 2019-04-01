@@ -2,6 +2,7 @@ require 'selenium-webdriver'
 require 'nokogiri'
 require 'capybara'
 
+Chromedriver.set_version "2.24"
 options = Selenium::WebDriver::Chrome::Options.new
 chrome_bin_path = ENV.fetch('GOOGLE_CHROME_SHIM', nil)
 options.binary = chrome_bin_path if chrome_bin_path # only use custom path on heroku
