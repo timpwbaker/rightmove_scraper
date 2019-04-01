@@ -1,4 +1,5 @@
 require 'selenium-webdriver'
+require "chromedriver-helper"
 require 'nokogiri'
 require 'capybara'
 
