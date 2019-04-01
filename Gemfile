@@ -36,7 +36,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'selenium-webdriver'
 gem 'nokogiri'
 gem 'capybara'
-gem 'chromedriver-helper'
+gem 'webdrivers', '~> 3.0'
 gem 'bootstrap'
 
 group :development, :test do
